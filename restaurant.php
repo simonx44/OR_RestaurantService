@@ -30,9 +30,11 @@ $GLOBALS["TAX_RATE"] = 0.19;
 
 // Get order details
 
-if (isset($_GET['id'])) {
+if (isset($_GET['orderId'])) {
     //GET ORDER BY ID
-    echo "not implemented";
+    $orderID = $_GET['orderId'];
+
+    return getOrderDetails($orderID);
 }
 
 
@@ -164,30 +166,35 @@ function addItemToOrder($orderId, $orderBody)
 
         return httpResponse("success", $order, 200);
     } catch (Exception $e) {
-        return httpResponse("error occured", null, 400);
+        return httpResponse($e->getMessage(), null, 400);
     }
 }
 
 function deleteItemFromOrder($orderId, $itemId)
 {
 
-    $orderID = transformParameter($orderId);
-    $itemID = transformParameter($itemId);
-    $orders = readJson($GLOBALS["ORDERS_PATH"]);
-    $message = "Item with id: " . $itemID . " deleted";
+    try {
 
-    if (!isset(($orders[$orderID]))) {
-        return httpResponse("Order with id: " . $orderID . " does not exists", null, 404);
-    } else if (!isset(($orders[$orderID]["items"][$itemID]))) {
+        $orderID = transformParameter($orderId);
+        $itemID = transformParameter($itemId);
+        $orders = readJson($GLOBALS["ORDERS_PATH"]);
+        $message = "Item with id: " . $itemID . " deleted";
 
-        return httpResponse("Item with id: " . $itemId . " does not exists", null, 404);
+        if (!isset(($orders[$orderID]))) {
+            return httpResponse("Order with id: " . $orderID . " does not exists", null, 404);
+        } else if (!isset(($orders[$orderID]["items"][$itemID]))) {
+
+            return httpResponse("Item with id: " . $itemId . " does not exists", null, 404);
+        }
+
+        unset($orders[$orderID]["items"][$itemId]);
+
+        file_put_contents($GLOBALS["ORDERS_PATH"], json_encode($orders));
+
+        return httpResponse($message, "", 200);
+    } catch (Exception $e) {
+        return httpResponse("error occured", null, 400);
     }
-
-    unset($orders[$orderID]["items"][$itemId]);
-
-    file_put_contents($GLOBALS["ORDERS_PATH"], json_encode($orders));
-
-    return httpResponse($message, "", 200);
 }
 
 function listOrders()
@@ -196,6 +203,26 @@ function listOrders()
     try {
         $orders = readJson($GLOBALS["ORDERS_PATH"]);
         return  httpResponse("success", $orders, 200);
+    } catch (Exception $e) {
+        return httpResponse($e->getMessage(), null, 400);
+    }
+}
+
+
+function getOrderDetails($orderID)
+{
+
+    try {
+        $orderId = transformParameter($orderID);
+        $orders = readJson($GLOBALS["ORDERS_PATH"]);
+
+        if (!isset(($orders[$orderId]))) {
+            return httpResponse("Order with id: " . $orderID . " does not exists", null, 404);
+        }
+
+        $requestedOrder = $orders[$orderId];
+
+        httpResponse("success", $requestedOrder, 200);
     } catch (Exception $e) {
         return httpResponse($e->getMessage(), null, 400);
     }
