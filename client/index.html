@@ -5,212 +5,151 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STUDENT_4_WS2021 -- test</title>
-    <script src="https://rapid-speech.com/ws2021/3rdparty/jquery/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="custom_function.js"></script>
-    <script src="https://rapid-speech.com/ws2021/3rdparty/annyang/annyang.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script type="text/javascript" src="//vhss-d.oddcast.com/vhost_embed_functions_v2.php?acc=7285930&js=1"></script>
-    <!-- <script type="text/javascript" src="https://46562a0.online-server.cloud:8084/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="https://fbe-iot-02.rwu.de:8084/socket.io/socket.io.js"></script> 
-    <script type="text/javascript" src="client_socketio.js"></script> -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
-    <script>
-        // ################################
-        // ANPASSUNGEN VOR DEM ERSTEN START
-        // ################################
-        /**         
-         * RS_CLIENT: Name des Clients. Wird beim Aufruf der Speech Engine benötigt.
-         * RS_TOKEN:  Wird im Backend (Clients Configuration) definiert. Wird zur Authentifizierung beim Aufruf der Speech Engine benötigt.
-         */
-        const RS_CLIENT = "STUDENT_4_WS2021";
-        const RS_TOKEN = "ilu5jash3r7xt27suad1u47nfecnl5ih"; //Token to authenticate
-
-        // ############################
-        // OFTMALS GENUTZTE ANPASSUNGEN 
-        // ############################
-        /**         
-         * RS_COMMANDS: Aktivierungswörter, auf die die Spracheingabe reagieren soll ("KITT"-Modus). Ist dieses Array leer (bspw. []) wird jede Spracheingabe verwertet.
-         * RS_KITT_INTERVALL: Dauer, wann ein aktiver "KITT"-Modus deaktiviert wird (in Sekunden).
-         * RS_COMMANDS_DYNNAV: Aktivierungswörter für die dynamische Navigation (DYNNAV). Wenn dieses Wort am Anfang eines Satzes erkannt wird, wird ein DYNNAV-Aufruf an die Speech Engine gesendet.
-         * RS_COMMANDS_STOP: Stoppwörter zur Deaktivierung des "KITT"-Modus. Nur GROSSBUCHSTABEN verwenden.
-         * RS_DEBUG_MODE: Der Debug-Modus wird aktiviert durch: "...&debug=1" in der URL
-         */
-        const RS_COMMANDS = ["Simon", 'Lisa', 'Laser', 'Leser', 'Alina', 'Ally', 'Alli', 'Aly', 'Ali', 'Elli', 'Eli', 'Elly', 'Rallye', 'Helli', 'Hell', 'Eddie', 'Heli', 'Markus', 'Marcus', "Alexa"]; //[OPTIONAL Definiere Commands, um mit diesen die Spracherkennung zu aktivieren. Bsp. ['Elli', ]]Speech engine commands to activate speech recognition
-        const RS_SALUTATION = 'Ja, bitte?';
-        const RS_KITT_INTERVALL = 30;
-        const RS_COMMANDS_DYNNAV = ['oke', 'ok', 'okay', 'o.k.', 'okey']; // [OPTIONAL] DYNNAV commands
-        const RS_COMMANDS_STOP = ['STOPP', 'STOP', 'TOP'];
-        const RS_COMMANDS_BACK = ['BACK', 'BECK', 'ZURÜCK', 'ZURUECK'];
-        var urlParams = new URLSearchParams(window.location.search);
-        const RS_DEBUG_MODE = urlParams.get('debug');   // nicht ändern!
-        const RS_AVATAR_MODE = urlParams.get('avatar'); // nicht ändern!
-        const RS_DYNNAV_MODE = urlParams.get('dynnav'); // nicht ändern!
-        const RS_RECORD_MODE = urlParams.get('record'); // nicht ändern!
-
-        // ###########################
-        // SELTEN GENUTZTE ANPASSUNGEN 
-        // ###########################
-        /**         
-         * RS_CLIENT_DOMAIN: Domain des Clients, ohne https://www., z.B. rapid-speech.com
-         * RS_CLIENTS_CORE_PATH: Pfad, in dem die clients_core.js liegt (beginnend "http" oder "https", abschließend mit "/")
-         * RS_SPEECH_ENGINE: komplette URL zur Speech Engine
-         * RS_PROXY: komplette URL zum Proxy-Server (Vermeidung der CORS-Problematik)
-         */
-        const RS_CLIENT_DOMAIN = "rapid-speech.com"; // [WITHOUT HTTPS://WWW.] Client-Domain
-        const RS_CLIENTS_CORE_PATH = "https://www.rapid-speech.com/ws2021/clients_core/";
-        const RS_SPEECH_ENGINE = "https://www.rapid-speech.com/ws2021/index.php?menu_level1=speech&menu_level2=engine";
-        const RS_GENERIC_MODULE_URL = "https://www.rapid-speech.com/ws2021/includes/generic_module/generic_module.php"
-        const RS_PROXY = "https://www.rapid-speech.com/ws2021/proxy.php?url="; //Proxy
-
-        var RS_KITT_ACTIVE = 0;      // will be set automatically
-        var RS_KITT_ACTIVE_TS = 0;   // will be set automatically
-
-        /**
-         * Load Client Core, CSS, etc 
-         */
-        $.getScript(RS_CLIENTS_CORE_PATH + "js/clients_core.js?v=ws2021");
-        document.write('<link href="' + RS_CLIENTS_CORE_PATH + '/css/fixed-footer-header.css?v=ws2021" rel="stylesheet" type="text/css" />');
-
-
-        /**
-         * Recognizes the speech, converts it into text and calls the speech engine.
-         */
-        function startSpeechRecognition() {
-            annyang.addCallback('result', function (context) {
-                console.log(context[0]);
-                //$("#voice_recognition_text").html(recognition.substring(0,40));
-                speechPreprocessing(context[0]);
-            }, this);
-            annyang.setLanguage('de-DE');
-            annyang.start();
-        }
-
-        /**
-         * Sends the message stored in RS_SALUTATION to the user.
-         */
-        function sendSaluation() {
-            console.log("text missing")
-            sayText(RS_SALUTATION, 3, 3, 2);
-            console.log("finished")
-        }
-    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./app.css">
+    <!--     <script src="./init.js"></script> -->
 </head>
 
-<body style="max-width: 100%;overflow-x: hidden;">
-    <!-- HEADER -->
-    <div class="row">
-        <nav class="navbar navbar-expand-md navbar-light bg-light col-sm-12">
-            <a href="javascript:CallAction('?menu_level1=home&amp;menu_level2=-',{use_ajax:false});"
-                class="navbar-brand">
-                <script>
-                    document.write('<img src="' + RS_CLIENTS_CORE_PATH + '/images/rapidspeechlogo_grey.gif" height="40" alt="RapidSpeech">&nbsp;' + RS_CLIENT + '</a>');
-                </script>
+<body class="min-vh-100 d-flex flex-column">
 
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-        </nav>
-    </div>
+    <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Gruppe 4 - Demo</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item" id="nav-1">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./customer.html">Customer View</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./restaurant.html">Restaurant View</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <table style="border:1px solid #dddddd; width:100%;">
-        <tr>
-            <td align="center" style="width:650px;border:1px solid #dddddd;"><br>
-                <!-- AVATAR -->
-                <div id="div-avatar">
-                    <script type="text/javascript">
-                        // AVATAR
-                        AC_VHost_Embed(7285930, 450, 600, '', 1, 1, 2713044, 0, 1, 0, '0e611490aa82e1fc3e11ad690b77ef4f', 0);
+    <main class="flex-grow-1">
 
-                    </script>
-                    <table border=0 width="600">
-                        <tr>
-                            <td align=center height=40 width=70>
-                                <script>
-                                    document.write('<img id="kittoff" name="kittoff" height=25 src="' + RS_CLIENTS_CORE_PATH + 'images/listening-off.gif">');
-                                    document.write('<img id="kitton" name="kitton" height=25  style="display:none;" src="' + RS_CLIENTS_CORE_PATH + 'images/listening-on.gif">');
-                                </script>
-                            </td>
-                            <td valign=middle align=center height=40 style="font-style: italic;" id="tts_avatar_text">
-                                &nbsp;
-                            </td>
-                        </tr>
-                        <tr style="border-top:1px solid #eeeeee;">
-                            <td valign=middle align=center width=40>
-                                <script>
-                                    document.write('<img id="kittoff" name="kittoff" height=25 src="' + RS_CLIENTS_CORE_PATH + 'images/mikrofon.gif">');
-                                </script>
-                            </td>
-                            <td valign=middle align=center height=40 style="color: #419bed;font-weight:bold;"
-                                id="voice_recognition_text">
-                                &nbsp;
-                            </td>
-                        </tr>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6 my-3">
+
+
+                    <div class="card w-100" style="height: 650px;">
+                        <img src="./assets/customer.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Customer view</h5>
+                            <p class="card-text">
+
+                                We offer an international selection of dishes. Convince yourself and order via our voice
+                                service
+                            </p>
+                            <a href="./customer.html" class="btn btn-primary w-100">View menu</a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-12 col-md-6 my-3">
+
+                    <div class="card" style="height: 650px;">
+                        <img src="./assets/restaurant.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Restaurant view</h5>
+                            <p class="card-text">As a restaurant you can fulfill orders with your voice. </p>
+                            <a href="./restaurant.html" class="btn btn-primary w-100">View Restaurant</a>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+        </div>
+        </div>
+    </main>
+
+
+
+    <footer class="text-white text-center text-lg-start bg-primary footer">
+        <!-- Grid container -->
+        <div class="container p-4">
+            <!--Grid row-->
+            <div class="row mt-4">
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">About company</h5>
+
+                    <p>
+                        Order food here
+                    </p>
+
+
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Contact</h5>
+
+                    <ul class="fa-ul" style="margin-left: 1.65em;">
+                        <li>
+                            <span class="fa-li"><i class="fas fa-home"></i></span><span class="ms-2">Weingarten
+                                88123, BW, Germany</span>
+                        </li>
+                        <li class="mb-3">
+                            <span class="fa-li"><i class="fas fa-envelope"></i></span><span
+                                class="ms-2">mail@mail.com</span>
+                        </li>
+                        <li class="mb-3">
+                            <span class="fa-li"><i class="fas fa-phone"></i></span><span
+                                class="ms-2">072812912888</span>
+                        </li>
+
+                    </ul>
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Opening hours</h5>
+
+                    <table class="table text-center text-white">
+                        <tbody class="font-weight-normal">
+                            <tr>
+                                <td>Mon - Thu:</td>
+                                <td>8am - 9pm</td>
+                            </tr>
+                            <tr>
+                                <td>Fri - Sat:</td>
+                                <td>8am - 1am</td>
+                            </tr>
+                            <tr>
+                                <td>Sunday:</td>
+                                <td>9am - 10pm</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
-                <!-- DYNNAV -->
-                <div>
-                    <table style="width:600px;">
-                        <tr style="background-color:#eeeeee;font-weight: bold;border:1px solid #dddddd;">
-                            <td style="padding:10px 0px 10px 0px;" align=center>Steuerung</td>
-                            <td style="padding:10px 0px 10px 0px;" align=center>Übereinstimmungen</td>
-                            <td style="padding:10px 0px 10px 0px;" align=center>Wahlmöglichkeiten</td>
-                        </tr>
-                        <tr style="height:200px;">
-                            <td align=center valign=top style="width:120px;padding:10px 0px 10px 0px;">
-                                <button type="button"
-                                    style="width:105px;padding:5px 5px 5px 5px;border:1px solid #aaaaaa;"
-                                    onclick="onStopPress()">STOP</button><br>
-                                <button type="button"
-                                    style="width:105px;margin-top:6px; padding:5px 5px 5px 5px;border:1px solid #aaaaaa;"
-                                    onclick="onBackPress()">BACK</button><br>
-                            </td>
-                            <td id="table-matched" valign=top align=center style="padding:10px 0px 10px 0px;">
-                            </td>
-                            <td id="table-unmatched" valign=top align=center style="padding:10px 0px 10px 0px;">
-                            </td>
-                        </tr>
-                        <tr style="border-top:1px solid #eeeeee;">
-                            <td align=left colspan=3>
-                                <!-- SUPPORT -->
-                                <table>
-                                    <tr>
-                                        <td align=center id="list-support"></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <!-- DEBUG -->
-                <div id="div-debug" class="col-md-3 offset-md-1"></div>
-            </td>
-            <td align="center" valign="middle" align="center">
-                <!-- HEADER -->
-                <!-- CONTENT -->
-                <div id="container-shoppinglist">
-                </div>
-                <div>
-                    <h1>Test 4</h1>
-                </div>
-            </td>
-        </tr>
-    </table>
+                <!--Grid column-->
+            </div>
+            <!--Grid row-->
+        </div>
+        <!-- Grid container -->
+    </footer>
 
-    <!-- FOOTER -->
-    <scrollfooter>
-        <center>
-            <table border=0 width="100%" style="border-spacing:6px;background:#cccccc;">
-                <tr>
-                    <td valign=middle width="80%" style="font-size:14px;color:#444444;" align=left><b>&nbsp;&nbsp;Rapid
-                            Speech Client</b>
 
-                    </td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-            </table>
-        </center>
-    </scrollfooter>
-    <!-- FOOTER -->
+    <!-- End of .container -->
+
 </body>
