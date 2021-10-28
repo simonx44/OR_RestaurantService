@@ -1,10 +1,12 @@
-//const BASE_URL = "http://localhost/or/backend/restaurant.php";
+const BASE_URL = "http://localhost/or/backend/restaurant.php";
 
-const BASE_URL = "https://www.rapid-speech.com/ws2021/mandators/ws2021/STUDENT_4_WS2021/clients/client_student4/backend/restaurant.php"
+//const BASE_URL = "https://www.rapid-speech.com/ws2021/mandators/ws2021/STUDENT_4_WS2021/clients/client_student4/backend/restaurant.php"
 
 $(document).ready(function () {
 
+    initCustomerView();
 
+    getMenu();
 
 
     $("#btn21").click(function () {
@@ -120,7 +122,7 @@ function openOrderCreatedModal(order) {
 
     <div class="d-flex flex-column">
     <span class="fw-bold">State</span> 
-    <span> ${state} </span>
+    <span> ${"OPEN"} </span>
     </div>
 
     <div class="d-flex flex-column">

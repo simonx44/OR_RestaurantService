@@ -1,11 +1,4 @@
-$(document).ready(function () {
-    initCustomerView();
-
-    getMenu();
-
-});
-
-
+// CustomerVIEW
 
 function addItemToBasket(itemId, quan) {
 
@@ -271,3 +264,76 @@ function placeOrder() {
 
 }
 
+
+// Restaurant View
+
+
+
+function getOrderOverview(status) {
+
+
+    try {
+
+        if (!status in ["OPEN", "CLOSED"]) {
+            throw new Error(`Status: ${status} no valid`)
+        }
+
+
+        fetch(BASE_URL + `/?orders=${status}`)
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.status == 200) {
+
+                    const orders = data.data;
+                    const message = `Offene Bestellungen wurden beschafft`
+                    showInfo(message, "info");
+                    renderOrders(orders, status);
+                } else {
+
+                    const message = `Bestellungen konnten nicht beschafft werden`;
+                    showInfo(message, "error")
+                }
+
+            });
+
+    } catch (error) {
+        showInfo(error.message, "error")
+
+    }
+
+
+}
+
+
+function getOrderDetails(id) {
+
+
+    try {
+
+
+        fetch(BASE_URL + `/?orderId=${id}`)
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.status == 200) {
+
+                    const orders = data.data;
+                    const message = `Bestelldetails zur Bestellung: ${id} wurden beschafft`
+                    showInfo(message, "info");
+                    renderOrderDetails(data.data);
+                } else {
+
+                    const message = `Offene Bestellung mit ID: ${id} nicht gefunden`;
+                    showInfo(message, "error");
+                }
+
+            });
+
+    } catch (error) {
+        showInfo(error.message, "error")
+
+    }
+
+
+}

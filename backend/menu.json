@@ -1,0 +1,22 @@
+{
+    "1000": {
+        "title": "Hamburger mit Pommes",
+        "price": 12,
+        "image": "./assets/menu/burger.jpg"
+    },
+    "1001": {
+        "title": "Pizza Salami",
+        "price": 8,
+        "image": "./assets/menu/salamipizza.jpg"
+    },
+    "1003": {
+        "title": "Hamburger mit Pommes",
+        "price": 12,
+        "image": "./assets/menu/burger.jpg"
+    },
+    "1004": {
+        "title": "Pizza Salami",
+        "price": 8,
+        "image": "./assets/menu/salamipizza.jpg"
+    }
+}

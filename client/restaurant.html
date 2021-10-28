@@ -24,8 +24,9 @@
 
 
     <!--  <script src="./init.js"></script> -->
-    <script src="./customerView.js"></script>
+    <script src="./restaurantView.js"></script>
     <script src="./helper.js"></script>
+    <script src="./rapidSpeech.js"></script>
     <link rel="stylesheet" href="./app.css">
 
 </head>
@@ -34,7 +35,7 @@
 
     <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Restaurant XYZ</a>
+            <a class="navbar-brand" href="./index.html">Gruppe 4 - Demo </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -45,40 +46,114 @@
                         <a class="nav-link" aria-current="page" href="./index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/customer.html">Customer View</a>
+                        <a class="nav-link" href="./customer.html">Customer View</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/restaurant.html">Restaurant View</a>
+                        <a class="nav-link active" href="./restaurant.html">Restaurant View</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Launch demo modal
-    </button>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <main class="flex-grow-1">
 
+        <div class="container my-5" style="min-width: 100%;">
 
+
+            <div class="row w-100">
+
+                <div class="col-12 col-xxl-4" id="avatar">
+
+                    <button class="btn btn-primary" id="btn-1">Detail</button>
+                    <div id="error" class="mb-2">
+
+                    </div>
+
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        <div id="div-avatar">
+
+                            <script type="text/javascript">
+                                // AVATAR
+                                AC_VHost_Embed(7285930, 450, 600, '', 1, 1, 2713044, 0, 1, 0, '0e611490aa82e1fc3e11ad690b77ef4f', 0);
+
+                            </script>
+                            <table border=0>
+                                <tr>
+                                    <td align=center height=40 width=70>
+                                        <script>
+                                            document.write('<img id="kittoff" name="kittoff" height=25 src="' + RS_CLIENTS_CORE_PATH + 'images/listening-off.gif">');
+                                            document.write('<img id="kitton" name="kitton" height=25  style="display:none;" src="' + RS_CLIENTS_CORE_PATH + 'images/listening-on.gif">');
+                                        </script>
+                                    </td>
+                                    <td valign=middle align=center height=40 style="font-style: italic;"
+                                        id="tts_avatar_text">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr style="border-top:1px solid #eeeeee;">
+                                    <td valign=middle align=center width=40>
+                                        <script>
+                                            document.write('<img id="kittoff" name="kittoff" height=25 src="' + RS_CLIENTS_CORE_PATH + 'images/mikrofon.gif">');
+                                        </script>
+                                    </td>
+                                    <td valign=middle align=center height=40 style="color: #419bed;font-weight:bold;"
+                                        id="voice_recognition_text">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- DYNNAV -->
+                        <div>
+                            <table style="width:600px;">
+                                <tr style="background-color:#eeeeee;font-weight: bold;border:1px solid #dddddd;">
+                                    <td style="padding:10px 0px 10px 0px;" align=center>Steuerung</td>
+                                    <td style="padding:10px 0px 10px 0px;" align=center>Übereinstimmungen</td>
+                                    <td style="padding:10px 0px 10px 0px;" align=center>Wahlmöglichkeiten</td>
+                                </tr>
+                                <tr style="height:200px;">
+                                    <td align=center valign=top style="width:120px;padding:10px 0px 10px 0px;">
+                                        <button type="button"
+                                            style="width:105px;padding:5px 5px 5px 5px;border:1px solid #aaaaaa;"
+                                            onclick="onStopPress()">STOP</button><br>
+                                        <button type="button"
+                                            style="width:105px;margin-top:6px; padding:5px 5px 5px 5px;border:1px solid #aaaaaa;"
+                                            onclick="onBackPress()">BACK</button><br>
+                                    </td>
+                                    <td id="table-matched" valign=top align=center style="padding:10px 0px 10px 0px;">
+                                    </td>
+                                    <td id="table-unmatched" valign=top align=center style="padding:10px 0px 10px 0px;">
+                                    </td>
+                                </tr>
+                                <tr style="border-top:1px solid #eeeeee;">
+                                    <td align=left colspan=3>
+                                        <!-- SUPPORT -->
+                                        <table>
+                                            <tr>
+                                                <td align=center id="list-support"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-12 col-xxl-8" id="orders">
+
+
+                </div>
+
+
+
+            </div>
+
+        </div>
 
 
 
