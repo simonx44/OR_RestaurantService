@@ -26,6 +26,7 @@
     <script src="./customerView.js"></script>
     <script src="./helper.js"></script>
     <script src="./rapidSpeech.js"></script>
+    <script src="./core.js"></script>
     <link rel="stylesheet" href="./app.css">
 </head>
 
@@ -60,105 +61,124 @@
 
         <div class="container my-5" style="min-width: 100%;">
 
-            <div class="row">
 
-            </div>
             <div class="row w-100">
                 <div class="col-12 col-xxl-4" id="menu">
 
                 </div>
 
                 <div class="col-12 col-xxl-4" id="avatar">
+                    <div class="d-flex flex-column h-100">
+                        <div id="error" class="mb-2">
 
-                    <div id="error" class="mb-2">
+                        </div>
+
+                        <div id="helper-box" class="flex-grow-1"></div>
 
                     </div>
+
+                </div>
+
+                <div class="col-12 col-xxl-4">
+                    <div class="d-flex flex-column h-100">
+                        <div id="div-avatar" class="mb-2">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="card-title border-bottom d-flex flex-row justify-content-between">
+                                        <h5>Kellner:</h5>
+                                        <div class="d-flex flex-row">
+
+                                            <div class="btn btn-outline-primary mx-1" onclick="onStopPress()">
+                                                Stop
+                                            </div>
+                                            <div class="btn btn-outline-primary mx-1" onclick="onBackPress()">
+                                                Back
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column w-100 align-items-center justify-content-center">
+                                        <div class="d-flex justify-content-between w-100 mx-2">
+                                            <div class="border border-3">
+                                                <script type="text/javascript">
+                                                    // AVATAR
+                                                    AC_VHost_Embed(7285930, 250, 250, '', 1, 1, 2713044, 0, 1, 0, '0e611490aa82e1fc3e11ad690b77ef4f', 0);
+
+                                                </script>
+                                            </div>
+
+
+
+                                            <div class="container ms-2">
+                                                <div class="row border-bottom">
+                                                    <div class="col-12 fw-bold">Tree-Options:</div>
+                                                    <div id="list-support" class="col-12 d-flex flex-column">
+                                                    </div>
+                                                </div>
+                                                <div class="row border-bottom">
+                                                    <div class="col-12 fw-bold">Matched Tree:</div>
+                                                    <div id="table-matched" class="col-12 d-flex flex-column">
+
+                                                    </div>
+                                                </div>
+                                                <div class="row border-bottom">
+                                                    <div class="col-12 fw-bold">Available Actions:</div>
+                                                    <!--  <div id="table-unmatched" class="col-12 d-flex flex-column"></div> -->
+                                                    <div id="table-unmatched" class="col-12 row">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="d-flex flex-row w-100">
+                                            <script>
+                                                document.write('<img id="kittoff" name="kittoff" height=25 src="' + RS_CLIENTS_CORE_PATH + 'images/listening-off.gif">');
+                                                document.write('<img id="kitton" name="kitton" height=25  style="display:none;" src="' + RS_CLIENTS_CORE_PATH + 'images/listening-on.gif">');
+                                            </script>
+
+
+                                            <div id="voice_recognition_text" style="height: 30px">
+
+                                            </div>
+
+                                        </div>
+                                        <div>
+                                            <div id="tts_avatar_text" class="typewriter ">
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div id="basket" class="flex-grow-1">
+
+                        </div>
+
+
+                    </div>
+
 
                     <div class="d-flex flex-column justify-content-center align-items-center">
-                        <button class="btn-primary btn" id="btn21">Add</button>
-                        <button class="btn-primary btn" id="btn22">Lösche</button>
-                        <button class="btn-primary btn" id="btn23">Clear</button>
-                        <button class="btn-primary btn" id="btn24">Clear</button>
-                        <div id="div-avatar">
 
-                            <script type="text/javascript">
-                                // AVATAR
-                                AC_VHost_Embed(7285930, 450, 600, '', 1, 1, 2713044, 0, 1, 0, '0e611490aa82e1fc3e11ad690b77ef4f', 0);
 
-                            </script>
-                            <table border=0>
-                                <tr>
-                                    <td align=center height=40 width=70>
-                                        <script>
-                                            document.write('<img id="kittoff" name="kittoff" height=25 src="' + RS_CLIENTS_CORE_PATH + 'images/listening-off.gif">');
-                                            document.write('<img id="kitton" name="kitton" height=25  style="display:none;" src="' + RS_CLIENTS_CORE_PATH + 'images/listening-on.gif">');
-                                        </script>
-                                    </td>
-                                    <td valign=middle align=center height=40 style="font-style: italic;"
-                                        id="tts_avatar_text">
-                                        &nbsp;
-                                    </td>
-                                </tr>
-                                <tr style="border-top:1px solid #eeeeee;">
-                                    <td valign=middle align=center width=40>
-                                        <script>
-                                            document.write('<img id="kittoff" name="kittoff" height=25 src="' + RS_CLIENTS_CORE_PATH + 'images/mikrofon.gif">');
-                                        </script>
-                                    </td>
-                                    <td valign=middle align=center height=40 style="color: #419bed;font-weight:bold;"
-                                        id="voice_recognition_text">
-                                        &nbsp;
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <!-- DYNNAV -->
-                        <div>
-                            <table style="width:600px;">
-                                <tr style="background-color:#eeeeee;font-weight: bold;border:1px solid #dddddd;">
-                                    <td style="padding:10px 0px 10px 0px;" align=center>Steuerung</td>
-                                    <td style="padding:10px 0px 10px 0px;" align=center>Übereinstimmungen</td>
-                                    <td style="padding:10px 0px 10px 0px;" align=center>Wahlmöglichkeiten</td>
-                                </tr>
-                                <tr style="height:200px;">
-                                    <td align=center valign=top style="width:120px;padding:10px 0px 10px 0px;">
-                                        <button type="button"
-                                            style="width:105px;padding:5px 5px 5px 5px;border:1px solid #aaaaaa;"
-                                            onclick="onStopPress()">STOP</button><br>
-                                        <button type="button"
-                                            style="width:105px;margin-top:6px; padding:5px 5px 5px 5px;border:1px solid #aaaaaa;"
-                                            onclick="onBackPress()">BACK</button><br>
-                                    </td>
-                                    <td id="table-matched" valign=top align=center style="padding:10px 0px 10px 0px;">
-                                    </td>
-                                    <td id="table-unmatched" valign=top align=center style="padding:10px 0px 10px 0px;">
-                                    </td>
-                                </tr>
-                                <tr style="border-top:1px solid #eeeeee;">
-                                    <td align=left colspan=3>
-                                        <!-- SUPPORT -->
-                                        <table>
-                                            <tr>
-                                                <td align=center id="list-support"></td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+
                     </div>
 
-
                 </div>
-
-                <div class="col-12 col-xxl-4" id="basket">
-
-
-                </div>
-
             </div>
         </div>
-
 
 
     </main>

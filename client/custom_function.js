@@ -337,3 +337,38 @@ function getOrderDetails(id) {
 
 
 }
+
+
+function closeOrdner(id) {
+
+
+    try {
+
+
+        fetch(BASE_URL + `/?update=${id}`)
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.status == 200) {
+
+                    const orders = data.data;
+                    const message = `Bestellung wurde geupdated`
+                    showInfo(message, "info");
+                    getOrderOverview("OPEN");
+                } else {
+
+                    const message = `Bestellung mit ID: ${id} nicht gefunden`;
+                    showInfo(message, "error");
+                }
+
+            });
+
+    } catch (error) {
+        showInfo(error.message, "error")
+
+    }
+
+
+
+}
+

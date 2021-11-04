@@ -1,6 +1,6 @@
-const BASE_URL = "http://localhost/or/backend/restaurant.php";
+//const BASE_URL = "http://localhost/or/backend/restaurant.php";
 
-//const BASE_URL = "https://www.rapid-speech.com/ws2021/mandators/ws2021/STUDENT_4_WS2021/clients/client_student4/backend/restaurant.php"
+const BASE_URL = "https://www.rapid-speech.com/ws2021/mandators/ws2021/STUDENT_4_WS2021/clients/client_student4/backend/restaurant.php"
 
 $(document).ready(function () {
 
@@ -8,12 +8,9 @@ $(document).ready(function () {
     getOrderOverview("OPEN");
 
 
+    createHelperBox();
 
 
-    $("#btn-1").click(function () {
-        getOrderDetails(81220);
-
-    })
 
 });
 
@@ -45,6 +42,8 @@ function renderOrders(orders, status) {
     //date, orderId, price, tax , status
 
     const title = status === "OPEN" ? "Offene" : "Geschlossene";
+
+    $("#orders").empty();
 
 
 
@@ -247,11 +246,107 @@ function renderOrderDetails(order) {
     })
 
 
+}
 
 
+function createHelperBox() {
+
+    const boxId = "#helper-box";
+
+    $(boxId).empty();
+
+    $('<div/>', {
+        class: 'card h-100',
+        html: '<div class="card-body d-flex flex-column" id="helper-body"></div>'
+    }).appendTo(boxId);
 
 
+    $('<div/>', {
+        class: 'card-title border-bottom',
+        html: '<h5>How to:</h5>'
+    }).appendTo("#helper-body");
+
+    $('<div/>', {
+        id: "helper-label",
+        class: "d-flex align-self-center",
+        html: `<div class="input-group mb-3">
+        <input id="in-1" type="text" class="max-vh-10 form-control" placeholder="Bestellung bzw. Item"
+            aria-label="Bestellung bzw. Item" aria-describedby="basic-addon1">
+    </div>`
+    }).appendTo("#helper-body");
+
+    $('<div/>', {
+        class: 'flex-grow-1',
+        id: "helper-list",
+        html: `
+        <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="Funktion">ID</th>
+          <th scope="Beispiele">TITLE</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody id="helper-items"> 
+    </tbody>
+    </table>`
+    }).appendTo('#helper-body');
 
 
+    helperContent.forEach((el, index) => {
+
+        const btn = `btn_helper${index}`;
+
+        $('<tr/>', {
+            id: `helper-element-${el.name}`,
+            class: "",
+            html: `
+                        <td>${el.name}</td>
+                        <td>${el.example}</td>
+                        <td><div id='${btn}' class="btn btn-primary ${el.function ? '' : 'disabled'}">Test</div></td>`
+        }).appendTo("#helper-items")
+
+        $(`#${btn}`).click(function () {
+            el.function();
+        });
+
+    })
+
+    //helperContent
 
 }
+
+
+
+const helperContent = [{
+
+    name: "Auftragsbearbeitung initiieren:",
+    example: "Aufträge starten, Auftragsbearbeitung starten,......",
+    function: undefined
+},
+{
+    name: "Bestimmte Bestellung anzeigen:",
+    example: "Zeige Bestellung BESTELLID an, Zeige BESTELLID an,........",
+    function: () => {
+        const v = $("#in-1").val();
+        getOrderDetails(v)
+    }
+},
+{
+    name: "Alle Bestellungen anzeigen:",
+    example: "Zeige alle Bestellungen an, Alle Bestellungen anzeigen,.....",
+    function: () => {
+
+        getOrderOverview("OPEN")
+    }
+},
+
+{
+    name: "Eine Bestellung abschließen: ",
+    example: " Ändere Status von BESTELLID auf closed, Status von BESTELLID auf fertig,....",
+    function: () => {
+        const v = $("#in-1").val();
+        closeOrdner(v)
+    }
+},
+]

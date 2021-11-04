@@ -53,7 +53,7 @@ var RS_KITT_ACTIVE_TS = 0;   // will be set automatically
  */
 // Überschreiben
 // $.getScript(RS_CLIENTS_CORE_PATH + "js/clients_core.js?v=ws2021");
-$.getScript("./" + "core.js");
+/* $.getScript("./" + "core.js"); */
 document.write('<link href="' + RS_CLIENTS_CORE_PATH + '/css/fixed-footer-header.css?v=ws2021" rel="stylesheet" type="text/css" />');
 
 

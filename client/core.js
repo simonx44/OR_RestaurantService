@@ -50,14 +50,18 @@ function speechPreprocessing(cp_text) {
             // STOP???
             if (RS_COMMANDS_STOP.includes(cv_text.trim().toUpperCase())) {
                 //RS_KITT_ACTIVE_TS=0; RS_KITT_ACTIVE=0;
-                $("#voice_recognition_text").html(cv_text.substring(0, 40));
+                const text = cp_text.substring(0, 40);
+                $("#voice_recognition_text").empty();
+                $("#voice_recognition_text").append(`<p class="typewriter">${text}</p>`);
                 onStopPress();
                 return;
             }
             // BACK???
             if (RS_COMMANDS_BACK.includes(cv_text.trim().toUpperCase())) {
                 //RS_KITT_ACTIVE_TS=0; RS_KITT_ACTIVE=0;
-                $("#voice_recognition_text").html(cv_text.substring(0, 40));
+                const text = cp_text.substring(0, 40);
+                $("#voice_recognition_text").empty();
+                $("#voice_recognition_text").append(`<p class="typewriter">${text}</p>`);
                 callSpeechEngine("", "0", "back");
                 return;
             }
@@ -74,7 +78,13 @@ function speechPreprocessing(cp_text) {
         // Check if activation command is detected 
         if (RS_COMMANDS.includes(cv_startWord) || (RS_COMMANDS_DYNNAV.includes(cv_startWord)) || (RS_KITT_ACTIVE == 1)) {
             if (cv_text) {
-                $("#voice_recognition_text").html(cp_text.substring(0, 40));
+
+
+                /*  style="width: 200px; height: 30px;" */
+
+                const text = cp_text.substring(0, 40);
+                $("#voice_recognition_text").empty();
+                $("#voice_recognition_text").append(`<p class="typewriter">${text}</p>`);
                 callSpeechEngine(cv_text, "0", "0");
             } else {
                 sendSaluation();
@@ -89,7 +99,10 @@ function speechPreprocessing(cp_text) {
         // If Command-Arrays are empty    
     } else {
         if (cv_text) {
-            $("#voice_recognition_text").html(cp_text.substring(0, 40));
+            const text = cp_text.substring(0, 40);
+            $("#voice_recognition_text").empty();
+            $("#voice_recognition_text").append(`<p class="typewriter">${text}</p>`);
+
             callSpeechEngine(cp_text, "0", "0");
             RS_KITT_ACTIVE_TS = Math.floor(Date.now() / 1000);
         }
@@ -137,15 +150,15 @@ function onSpeechEngineSuccess(cp_data) {
         var cv_support = cp_data.DYNNAV.SUPPORTED;
         for (const key in cv_matched) {
             //$('#table-matched').append('<tr><td style="padding:0px;">' + cv_matched[key] + '</td></tr>');
-            $('#table-matched').append(cv_matched[key] + "<br>");
+            $('#table-matched').append(cv_matched[key]);
         }
         for (const key in cv_unmatched) {
             //$('#table-unmatched').append('<tr><td style="padding:0px;"><span class="badge badge-primary" style="cursor: pointer" onclick="onPress()">' + cv_unmatched[key] + '</span></td></tr>');
-            $('#table-unmatched').append('<span class="badge badge-primary" style="cursor: pointer" onclick="onPress()">' + cv_unmatched[key] + '</span><br>');
+            $('#table-unmatched').append('<div class="col-12 col-md-6 overflow-hidden btn btn-outline-primary btn-sm" style="max-height: 38px; cursor: pointer" onclick="onPress()">' + cv_unmatched[key] + '</div>');
         }
         for (const key in cv_support) {
             //$('#list-support').append('<li style="float:left; padding-right: 10px;"><span onclick="onPress()" style="color: #4169E1; cursor: pointer; text-align: center;">' + cv_support[key] + '</span></li>');
-            $('#list-support').append('<font onclick="onSupportPress()" style="color: #4169E1;cursor: pointer;">' + cv_support[key] + '</font>&nbsp;&nbsp;<wbr>');
+            $('#list-support').append('<font onclick="onSupportPress()" style="color: #4169E1;cursor: pointer;">' + cv_support[key] + '</font>');
         }
     }
     // Output query for debug purposes
@@ -256,11 +269,6 @@ function executeAJAX(cp_url, cp_httpMethod, cp_returnType, cp_htmlElement, cp_he
         external_call: true,
         headers: cp_header,
         data: cp_body,
-       /*  error: function (request, status, error) {
-
-            console.log(error);
-            console.log(request);
-        }, */
         success: function (data) {
             switch (cp_returnType) {
                 case "HTML":
@@ -361,9 +369,6 @@ function CallAction(theurl, theparams)
 function AjaxStandardFailure(jqXHR, textStatus, errorThrown)
 // #####################################
 {
-
-    console.log("was soll der schmutz hier??????ß")
-
     console.log("AJAX Standard Failure Routine:");
 }
 
