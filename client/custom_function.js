@@ -2,6 +2,8 @@
 
 function addItemToBasket(itemId, quan) {
 
+
+
     try {
 
         const body = {
@@ -201,7 +203,7 @@ function clearCustomerBasket() {
             .then(response => response.json())
             .then(data => {
 
-                console.log("test")
+
                 if (data.status == 200) {
 
                     readMessage(`Der Warenkorb wurde geleert`);
@@ -352,9 +354,13 @@ function closeOrdner(id) {
                 if (data.status == 200) {
 
                     const orders = data.data;
-                    const message = `Bestellung wurde geupdated`
+                    const message = `Bestellung ${id} wurde abgeschlossen`
+                    readMessage(message);
                     showInfo(message, "info");
-                    getOrderOverview("OPEN");
+                    setTimeout(() => {
+                        getOrderOverview("OPEN");
+                    }, 3000)
+
                 } else {
 
                     const message = `Bestellung mit ID: ${id} nicht gefunden`;

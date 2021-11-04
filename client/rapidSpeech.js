@@ -19,7 +19,7 @@ const RS_TOKEN = "ilu5jash3r7xt27suad1u47nfecnl5ih"; //Token to authenticate
  * RS_DEBUG_MODE: Der Debug-Modus wird aktiviert durch: "...&debug=1" in der URL
  */
 const RS_COMMANDS = ["Simon", 'Lisa', 'Laser', 'Leser', 'Alina', 'Ally', 'Alli', 'Aly', 'Ali', 'Elli', 'Eli', 'Elly', 'Rallye', 'Helli', 'Hell', 'Eddie', 'Heli', 'Markus', 'Marcus', "Alexa"]; //[OPTIONAL Definiere Commands, um mit diesen die Spracherkennung zu aktivieren. Bsp. ['Elli', ]]Speech engine commands to activate speech recognition
-const RS_SALUTATION = 'Hallo, Ihre Bestellung bitte';
+const RS_SALUTATION = isRestautantView ? "An die Arbeit" : 'Hallo, Ihre Bestellung bitte';
 const RS_KITT_INTERVALL = 30;
 const RS_COMMANDS_DYNNAV = ['oke', 'ok', 'okay', 'o.k.', 'okey']; // [OPTIONAL] DYNNAV commands
 const RS_COMMANDS_STOP = ['STOPP', 'STOP', 'TOP'];
@@ -62,7 +62,7 @@ document.write('<link href="' + RS_CLIENTS_CORE_PATH + '/css/fixed-footer-header
  */
 function startSpeechRecognition() {
     annyang.addCallback('result', function (context) {
-        console.log(context[0]);
+
         //$("#voice_recognition_text").html(recognition.substring(0,40));
         speechPreprocessing(context[0]);
     }, this);

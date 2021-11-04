@@ -2,6 +2,8 @@
 
 const BASE_URL = "https://www.rapid-speech.com/ws2021/mandators/ws2021/STUDENT_4_WS2021/clients/client_student4/backend/restaurant.php"
 
+let isRestautantView = true;
+
 $(document).ready(function () {
 
 
@@ -84,12 +86,11 @@ function renderOrders(orders, status) {
 
     Object.keys(orders).forEach((key) => {
 
-        console.log(orders);
+
 
         const order = orders[key];
 
-        console.log("jdsjns")
-        console.log(order);
+
 
         const { date, orderId, price, tax } = order;
 

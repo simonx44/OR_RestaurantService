@@ -2,6 +2,8 @@
 
 const BASE_URL = "https://www.rapid-speech.com/ws2021/mandators/ws2021/STUDENT_4_WS2021/clients/client_student4/backend/restaurant.php"
 
+let isRestautantView = false;
+
 $(document).ready(function () {
 
     initCustomerView();
@@ -162,7 +164,7 @@ function openOrderCreatedModal(order) {
 
 function renderInitalBasket() {
 
-    console.log("basket clear --------")
+
 
     $("#basket").empty();
 
@@ -215,15 +217,11 @@ function createBasketItem(id, price, total, title, quantity, tax) {
 
     const htmlID = `basket-element-${id}`;
 
-    console.log("add item to list:")
-
-    console.log($("#basket-list-empty").length);
 
     if ($("#basket-list-empty").length) {
 
         $("#basket-list-empty").remove();
 
-        console.log("create dsafavb-mlvedns2mj7sk ghij")
 
         $('<div/>', {
             class: 'flex-grow-1',
@@ -300,7 +298,7 @@ function updateBasket(tax, price) {
     }).appendTo("#basket-body");
 
 
-    console.log("RENDER BASKET FOOTER")
+
 
 };
 
@@ -322,7 +320,6 @@ function getMenu() {
                     const menuList = Object.keys(menu).map(key => {
 
                         const menuItem = menu[key];
-                        console.log(menuItem.title);
                         return $('<li/>', {
                             dataId: `${key}`,
                             class: "list-group-item",

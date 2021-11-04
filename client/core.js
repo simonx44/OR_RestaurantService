@@ -1,14 +1,6 @@
 $(document).ready(function () {
 
 
-    console.log("test");
-
-    console.log("hier");
-
-
-    console.log(RS_CLIENTS_CORE_PATH)
-
-
     // Include 
     $.getScript(RS_CLIENTS_CORE_PATH + "3rdparty/json-formatter/json-formatter.2.3.4.min.js")
         .done(function () {
@@ -36,7 +28,7 @@ $(document).ready(function () {
  * @param {String} cp_text     The recognized text
  */
 function speechPreprocessing(cp_text) {
-    console.log(cp_text);
+
     if (typeof RS_RECORD_MODE !== 'undefined' && RS_RECORD_MODE == '1') {
         RS_KITT_ACTIVE = 1;
         RS_KITT_ACTIVE_TS = 1;
@@ -196,7 +188,7 @@ function onBackPress() {
 }
 
 function KITT() {
-    //console.log(RS_KITT_ACTIVE);
+
     if (typeof RS_RECORD_MODE !== 'undefined' && RS_RECORD_MODE == '1') {
         if (RS_KITT_ACTIVE_TS < RS_KITT_INTERVALL) {
             $("#kitton").show();
@@ -281,9 +273,9 @@ function executeAJAX(cp_url, cp_httpMethod, cp_returnType, cp_htmlElement, cp_he
                         } catch (e) {
                             console.log(e);
                         }
-                        console.log("call")
+
                         window[cp_returnType](data);
-                        console.log(cp_returnType)
+
                     }
                     break;
             }

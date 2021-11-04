@@ -58,7 +58,7 @@ $.getScript(RS_CLIENTS_CORE_PATH + "js/clients_core.js?v=ws2021");
  */
 function startSpeechRecognition() {
     annyang.addCallback('result', function (context) {
-        console.log(context[0]);
+
         //$("#voice_recognition_text").html(recognition.substring(0,40));
         speechPreprocessing(context[0]);
     }, this);
